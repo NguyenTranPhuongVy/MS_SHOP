@@ -1,0 +1,108 @@
+<div class="row">
+    <div class="col-sm-12 mt-1">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-header-text" v-text="title"></h5>
+            </div>
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                        {{> product/common/button}}
+                        <el-tabs class="mt-1" v-model="activeName" @tab-click="handleClick">
+                            <el-tab-pane :label="item.label + ' (0)'" :name="item.name"
+                                v-for="item in listData.tabsMain">
+                                {{> product/common/filter}}
+                                {{> product/common/showOption}}
+                                <hr>
+                                <b>Có <span class="text-color">0</span> Sản Phẩm</b>
+                                <el-table class="mt-1" ref="multipleTable" :data="tableData" style="width: 100%"
+                                    @selection-change="handleSelectionChange">
+                                    <el-table-column type="selection" width="55">
+                                    </el-table-column>
+                                    <el-table-column type="index" label="STT">
+                                    </el-table-column>
+                                    <el-table-column prop="code" label="Mã" width="100">
+                                    </el-table-column>
+                                    <el-table-column prop="image" label="Hình Ảnh" width="120">
+                                        <template slot-scope="scope">
+                                            <img :src="'clients/images/products/' + scope.row.image" alt="" srcset=""
+                                                class="img-width">
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="name" label="Tên Sản Phẩm" width="200">
+                                    </el-table-column>
+                                    <el-table-column prop="describe" label="Mô Tả Sản Phẩm" width="300"
+                                        v-if="showTable.showDescribe">
+                                    </el-table-column>
+                                    <el-table-column label="Giá Sản Phẩm" width="120" v-if="showTable.showPrice">
+                                        <template slot-scope="scope">
+                                            <span v-text="priceFormat(scope.row.price)"></span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="Giá Bán" v-if="showTable.showPrice">
+                                        <template slot-scope="scope">
+                                            <span
+                                                v-text="formatSumPrice(scope.row.price, scope.row.percentDiscount)"></span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="dateCreate" label="Ngày Tạo" v-if="showTable.showTime">
+                                        <template slot-scope="scope">
+                                            <span v-text="formatDateCreate(scope.row.dateCreate)"></span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="dateModified" label="Ngày Sửa" v-if="showTable.showTime">
+                                        <template slot-scope="scope">
+                                            <span v-text="formatDateModify(scope.row.dateModified)"></span>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column label="Tình trạng">
+                                        <template slot-scope="scope">
+                                            <el-switch v-model="scope.row.active"></el-switch>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="view" label="Lượt Xem">
+                                    </el-table-column>
+                                    <el-table-column prop="userCreate" label="Người Dùng" width="150"
+                                        v-if="showTable.showUser">
+                                    </el-table-column>
+                                    <el-table-column prop="category" label="Danh Mục" width="200"
+                                        v-if="showTable.showCategory">
+                                        <template slot-scope="scope" class="tag-cate">
+                                            <el-tag type="info" closable>Thun Nam</el-tag>
+                                            <el-tag type="info" closable>Thun Nữ</el-tag>
+                                            <el-tag type="info" closable>Unisex</el-tag>
+                                            <el-tag class="icon-hover">
+                                                <i class="fas fa-plus-circle" aria-hidden="true"></i>
+                                            </el-tag>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column prop="option" label="Tuỳ Chọn" width="200" fixed="right">
+                                        <template slot-scope="scope">
+                                            <span class="fas-icon">
+                                                <i class="fas fa-eye" aria-hidden="true"></i> |
+                                            </span>
+                                            <span class="fas-icon">
+                                                <i class="fas fa-edit" aria-hidden="true"></i> |
+                                            </span>
+                                            <span class="fas-icon">
+                                                <i class="fas fa-bell" aria-hidden="true"></i> |
+                                            </span>
+                                            <span class="fas-icon">
+                                                <i class="fas fa-comments" aria-hidden="true"></i> |
+                                            </span>
+                                            <span class="fas-icon">
+                                                <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                                            </span>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{> product/dialog/createProduct}}
+</div>
+<script src="js/product/app.js"></script>

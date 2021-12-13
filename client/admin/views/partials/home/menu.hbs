@@ -1,0 +1,16 @@
+<aside class="main-sidebar hidden-print" id="menu">
+    <section class="sidebar" id="sidebar-scroll">
+        <ul class="sidebar-menu">
+            <li class="nav-level"></li>
+            <li class="treeview" v-for="item in listData">
+                <a class="waves-effect waves-dark" :href="item.link"><i :class="item.icon"></i> <span class="ml-1"
+                        v-text="item.name"></span><i :class="item.TreeView"></i></a>
+                <ul :class="item.IfTree">
+                    <li v-for="items in item.listTreeView"><a class="waves-effect waves-dark" :href="items.Link"><i
+                                :class="items.icon"></i> <span v-text="item.name"></span></a></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+</aside>
+<script src="js/menu/menu.js"></script>

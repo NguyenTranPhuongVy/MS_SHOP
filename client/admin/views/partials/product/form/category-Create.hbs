@@ -1,0 +1,14 @@
+<el-form :label-position="labelPositionTop" :model="categoryForm" :rules="categoryValidate" ref="categoryForm" label-width="120px"
+    class="demo-categoryForm" size="mini">
+    <div class="col-lg-6"></div>
+    <div class="col-lg-6">
+        <el-card v-loading="loadingCate" shadow="hover">
+            <el-form-item label="Tên Danh Mục" prop="name">
+                <el-input v-model="categoryForm.name"  maxlength="100" show-word-limit></el-input>
+            </el-form-item>
+            <el-form-item class="float-right">
+                <el-button @click="createNewCate('categoryForm')" type="success" plain>Thêm Danh Mục</el-button>
+            </el-form-item>
+        </el-card>
+    </div>
+</el-form>

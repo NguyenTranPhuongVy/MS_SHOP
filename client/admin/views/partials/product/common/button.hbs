@@ -1,0 +1,29 @@
+<el-popover placement="bottom" trigger="click">
+    <el-button @click="clickBtnCreateProductNew()" type="danger" plain>
+        <i class="fas fa-plus"></i> Thêm Mới
+    </el-button>
+    <el-button type="info" plain>
+        <i class="fas fa-server"></i> Thêm API
+    </el-button>
+    <el-button type="success" plain>
+        <i class="fas fa-file-excel"></i> Thêm Excel
+    </el-button>
+    <el-button type="danger" slot="reference">
+        <i class="fas fa-plus"></i> Thêm Sản Phẩm
+    </el-button>
+</el-popover>
+<el-popover placement="bottom" trigger="click">
+    <el-button type="success" plain>
+        <i class="fas fa-file-excel"></i> Thêm Excel
+    </el-button>
+    <el-button type="warning" plain>
+        <i class="fas fa-file-pdf"></i> Thêm PDF
+    </el-button>
+    <el-button type="info" plain>
+        <i class="fas fa-print"></i> Máy In
+    </el-button>
+    <el-button type="danger" slot="reference">
+        <i class="fas fa-download"></i> Tải Về
+    </el-button>
+</el-popover>
+
