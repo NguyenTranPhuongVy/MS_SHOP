@@ -42,6 +42,7 @@ new Vue({
                 ],
 
                 listCategory: [],
+                listGroupCategory: [],
             },
 
             title: 'Quản Lý Sản Phẩm',
@@ -68,6 +69,12 @@ new Vue({
                 dateEnd: '',
                 priceStart: '',
                 priceEnd: '',
+            },
+
+            commonForm: {
+                commonTabMain: {
+
+                },
             },
 
             productForm: {
@@ -148,14 +155,16 @@ new Vue({
             imageUpload: 'images/image-product/common/no-imgae.png',
             isUploadImage: false,
             isHoverCate: false,
-            loadingCate: false,
             createCate: '',
             titleCreate: '',
+            loadingCate: false,
+            loadingTableProduct: false,
         }
     },
 
     mounted() {
         this.loadProduct();
+        this.loadCategory();
         this.loadCategoryProduct();
     },
 
@@ -163,6 +172,7 @@ new Vue({
 
         loadProduct() {
             let that = this;
+            that.loadingTableProduct = true;
             const link = that.api.linkAPI + 'product/get-product';
             axios.get(link, {
                     params: JSON.parse(JSON.stringify(that.api))
@@ -172,6 +182,137 @@ new Vue({
                     if (response.data.success) {
                         if (response.status === 200) {
                             that.tableData = response.data.data;
+                            setTimeout(function() {
+                                that.loadingTableProduct = false;
+                            }, 1000);
+                        } else {
+                            that.$message({
+                                message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
+                                type: 'warning'
+                            });
+                        }
+                    } else {
+                        that.$message({
+                            message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
+                            type: 'warning'
+                        });
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                });
+        },
+
+        loadBinProduct() {
+            let that = this;
+            that.loadingTableProduct = true;
+            const link = that.api.linkAPI + 'product/get-product-bin';
+            axios.get(link, {
+                    params: JSON.parse(JSON.stringify(that.api))
+                })
+                .then(function(response) {
+                    // handle success
+                    if (response.data.success) {
+                        if (response.status === 200) {
+                            that.tableData = response.data.data;
+                            setTimeout(function() {
+                                that.loadingTableProduct = false;
+                            }, 1000);
+                        } else {
+                            that.$message({
+                                message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
+                                type: 'warning'
+                            });
+                        }
+                    } else {
+                        that.$message({
+                            message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
+                            type: 'warning'
+                        });
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                });
+        },
+
+        loadNoteProduct() {
+            let that = this;
+            that.loadingTableProduct = true;
+            const link = that.api.linkAPI + 'product/get-product-note';
+            axios.get(link, {
+                    params: JSON.parse(JSON.stringify(that.api))
+                })
+                .then(function(response) {
+                    // handle success
+                    if (response.data.success) {
+                        if (response.status === 200) {
+                            that.tableData = response.data.data;
+                            setTimeout(function() {
+                                that.loadingTableProduct = false;
+                            }, 1000);
+                        } else {
+                            that.$message({
+                                message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
+                                type: 'warning'
+                            });
+                        }
+                    } else {
+                        that.$message({
+                            message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
+                            type: 'warning'
+                        });
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                });
+        },
+
+        loadFollowProduct() {
+            let that = this;
+            that.loadingTableProduct = true;
+            const link = that.api.linkAPI + 'product/get-product-follow';
+            axios.get(link, {
+                    params: JSON.parse(JSON.stringify(that.api))
+                })
+                .then(function(response) {
+                    // handle success
+                    if (response.data.success) {
+                        if (response.status === 200) {
+                            that.tableData = response.data.data;
+                            setTimeout(function() {
+                                that.loadingTableProduct = false;
+                            }, 1000);
+                        } else {
+                            that.$message({
+                                message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
+                                type: 'warning'
+                            });
+                        }
+                    } else {
+                        that.$message({
+                            message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
+                            type: 'warning'
+                        });
+                    }
+                })
+                .catch(function(error) {
+                    // handle error
+                });
+        },
+
+        loadCategory() {
+            let that = this;
+            const link = that.api.linkAPI + '/product/category/get-category';
+            axios.get(link, {
+                    params: JSON.parse(JSON.stringify(that.api))
+                })
+                .then(function(response) {
+                    // handle success
+                    if (response.data.success) {
+                        if (response.status === 200) {
+                            that.listData.listCategory = response.data.data;
                         } else {
                             that.$message({
                                 message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
@@ -192,7 +333,7 @@ new Vue({
 
         loadCategoryProduct() {
             let that = this;
-            const link = that.api.linkAPI + '/product/get-product-category';
+            const link = that.api.linkAPI + '/product/category/get-groupcategory';
             axios.get(link, {
                     params: JSON.parse(JSON.stringify(that.api))
                 })
@@ -200,7 +341,7 @@ new Vue({
                     // handle success
                     if (response.data.success) {
                         if (response.status === 200) {
-                            that.listData.listCategory = response.data.data;
+                            that.listData.listGroupCategory = response.data.data;
                         } else {
                             that.$message({
                                 message: 'Quá trình tải đang bị gián đoạn! Vui lòng tải lại.',
@@ -307,7 +448,7 @@ new Vue({
                                     type: 'success'
                                 });
                                 that.clickCateNewProduct();
-                                that.loadCategoryProduct();
+                                that.loadCategory();
                                 that.$refs[categoryForm].resetFields();
                             } else {
                                 that.$notify({
@@ -365,8 +506,23 @@ new Vue({
             this.listItem = val;
         },
 
-        handleClick(tab, event) {
-            console.log(tab, event);
+        handleClickTabMain() {
+            let that = this;
+            if (that.activeName === 'index') {
+                that.loadProduct();
+                that.loadCategoryProduct();
+            } else if (that.activeName === 'delete') {
+                that.loadBinProduct();
+                that.loadCategoryProduct();
+            } else if (that.activeName === 'follow') {
+                that.loadFollowProduct();
+                that.loadCategoryProduct();
+            } else if (that.activeName === 'note') {
+                that.loadNoteProduct();
+                that.loadCategoryProduct();
+            } else {
+                return false;
+            }
         },
 
         handleChange(value) {},

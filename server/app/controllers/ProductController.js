@@ -7,8 +7,7 @@ class ProductController {
     // *[GET]
     getProduct = (req, res, next) => {
         productModel.find({
-            bin: false,
-            active: true
+            bin: false
         }, function(err, data) {
             res.json({
                 data: data,
@@ -18,6 +17,50 @@ class ProductController {
             dateCreate: -1
         })
     }
+
+    getBinProduct = (req, res) => {
+        productModel.find({
+            bin: true
+        }, function(err, data) {
+            res.json({
+                data: data,
+                success: true
+            })
+        }).sort({
+            dateCreate: -1
+        })
+    }
+
+    getNoteProduct = (req, res) => {
+        productModel.find({
+            bin: false,
+            active: true,
+            note: true
+        }, function(err, data) {
+            res.json({
+                data: data,
+                success: true
+            })
+        }).sort({
+            dateCreate: -1
+        })
+    }
+
+    getFollowProduct = (req, res) => {
+        productModel.find({
+            bin: false,
+            active: true,
+            follow: true
+        }, function(err, data) {
+            res.json({
+                data: data,
+                success: true
+            })
+        }).sort({
+            dateCreate: -1
+        })
+    }
+
 
     getCategory = (req, res) => {
         categoryModel.find({
@@ -34,6 +77,22 @@ class ProductController {
         }).projection({
             _id: 1,
             name: 1
+        });
+    }
+
+
+    getProductCategory = (req, res) => {
+        categoryProductModel.find({
+            active: true,
+        }, function(err, data) {
+            res.json({
+                data: data,
+                success: true
+            })
+        }).projection({
+            _id: 1,
+            idProduct: 1,
+            idCategory: 1
         });
     }
 

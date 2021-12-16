@@ -112,8 +112,9 @@ html {}
     vertical-align: bottom;
 }
 
-.ms-style .tag-cate .el-tag {
-    margin: 1%;
+.ms-style .tag-cate {
+    margin-right: 2%;
+    margin-bottom: 2%;
 }
 
 .icon-hover :hover {

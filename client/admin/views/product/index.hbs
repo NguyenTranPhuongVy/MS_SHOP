@@ -8,15 +8,15 @@
                 <div class="row">
                     <div class="col-sm-12 table-responsive">
                         {{> product/common/button}}
-                        <el-tabs class="mt-1" v-model="activeName" @tab-click="handleClick">
-                            <el-tab-pane :label="item.label + ' (0)'" :name="item.name"
-                                v-for="item in listData.tabsMain">
+                        <el-tabs class="mt-1" v-model="activeName" @tab-click="handleClickTabMain">
+                            <el-tab-pane v-for="item in listData.tabsMain" :key="item.name" :label="item.label + ' (0)'"
+                                :name="item.name">
                                 {{> product/common/filter}}
                                 {{> product/common/showOption}}
                                 <hr>
                                 <b>Có <span class="text-color">0</span> Sản Phẩm</b>
-                                <el-table class="mt-1" ref="multipleTable" :data="tableData" style="width: 100%"
-                                    @selection-change="handleSelectionChange">
+                                <el-table v-loading="loadingTableProduct" class="mt-1" ref="multipleTable"
+                                    :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
                                     <el-table-column type="selection" width="55">
                                     </el-table-column>
                                     <el-table-column type="index" label="STT">
@@ -67,10 +67,15 @@
                                     </el-table-column>
                                     <el-table-column prop="category" label="Danh Mục" width="200"
                                         v-if="showTable.showCategory">
-                                        <template slot-scope="scope" class="tag-cate">
-                                            <el-tag type="info" closable>Thun Nam</el-tag>
-                                            <el-tag type="info" closable>Thun Nữ</el-tag>
-                                            <el-tag type="info" closable>Unisex</el-tag>
+                                        <template slot-scope="scope">
+                                            <el-tag class="tag-cate" v-for="item in listData.listGroupCategory"
+                                                v-if="item.idProduct == scope.row._id" :key="item._id" type="info"
+                                                closable>
+                                                <span v-for="items in listData.listCategory"
+                                                    v-if="items._id == item.idCategory" :key="items._id">
+                                                    <span v-text="items.name"></span>
+                                                </span>
+                                            </el-tag>
                                             <el-tag class="icon-hover">
                                                 <i class="fas fa-plus-circle" aria-hidden="true"></i>
                                             </el-tag>
