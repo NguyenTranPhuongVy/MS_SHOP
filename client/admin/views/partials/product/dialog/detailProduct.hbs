@@ -1,0 +1,135 @@
+<el-dialog :title="title" :visible.sync="dialogFormDetailProduct" class="form-label">
+    <el-tabs v-model="activeDetails" @tab-click="handleClickDetails">
+        <el-tab-pane label="Thông Tin Chi Tiết" name="info">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="image-detail">
+                        <img src="/images/image-product/products/file-1639368029898-526495270-2d3988d1f6b1fae88b34ddf87349a432.jpg"
+                            alt="" srcset="">
+                    </div>
+                    <hr>
+                    <div class="statistical">
+                        <h6>Thống Kê</h6>
+                        <div class="label-main">
+                            <label class="label label-inverse-default">Có <span class="text-danger"
+                                    v-text="view"></span> lượt xem</label>
+                        </div>
+                        <div class="label-main">
+                            <label class="label label-inverse-default">Có <span class="text-danger"
+                                    v-text="view"></span> lượt theo
+                                dõi</label>
+                        </div>
+                        <div class="label-main">
+                            <label class="label label-inverse-default">Có <span class="text-danger"
+                                    v-text="view"></span> lượt chú ý</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h5 v-text="name"></h5>
+                    <hr>
+                    <div class="tag-group" class="category-detail">
+                        <span>Danh Mục: </span>
+                        <el-tag type="info" effect="plain">
+                            <span>Áo Somi</span>
+                        </el-tag>
+                    </div>
+                    <hr>
+                    <div class="row label-margin">
+                        <div class="col-lg-6">
+                            <span>
+                                Ngày Tạo:
+                                <label v-text="dateCreate" class="badge badge-inverse-default"></label>
+                            </span>
+                        </div>
+                        <div class="col-lg-6">
+                            <span>
+                                Ngày Sửa:
+                                <label v-text="dateModified" class="badge badge-inverse-default"></label>
+                            </span>
+                        </div>
+                        <div class="col-lg-6">
+                            <span>
+                                Người Tạo:
+                                <label v-text="userCreate" class="badge badge-inverse-default"></label>
+                            </span>
+                        </div>
+                        <div class="col-lg-6">
+                            <span>
+                                Người Sửa:
+                                <label v-text="userModified" class="badge badge-inverse-default"></label>
+                            </span>
+                        </div>
+                        <div class="col-lg-6">
+                            <span>
+                                Trạng Thái:
+                                <label v-text="activeText" :class="'badge badge-inverse-'+ activeColor"></label>
+                            </span>
+                        </div>
+                        <div class="col-lg-6">
+                            <span>
+                                Theo Dõi:
+                                <label v-text="followText" :class="'badge badge-inverse-'+ followColor"></label>
+                            </span>
+                        </div>
+                        <div class="col-lg-6">
+                            <span>
+                                Chú Ý:
+                                <label v-text="noteText" :class="'badge badge-inverse-'+ noteColor"></label>
+                            </span>
+                        </div>
+                        <div class="col-lg-6">
+                            <span>
+                                Thùng Rác:
+                                <label v-text="binText" :class="'badge badge-inverse-'+ binColor"></label>
+                            </span>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="product-content">
+                        <div>
+                            <h6>Mô Tả</h6>
+                            <i>
+                                <p v-text="describe"></p>
+                            </i>
+                        </div>
+                        <br>
+                        <div>
+                            <h6>Nội Dung</h6>
+                            <p v-text="content"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 history-timeline">
+                    <p>Lịch Sử Truy Cập - Thay Đổi</p>
+                    <el-timeline :reverse="reverseHistory">
+                        <el-timeline-item v-for="(item, index) in listData.timelineHistory" :key="index"
+                            :timestamp="item.timestamp">
+                            <span v-text="item.contents"></span>
+                        </el-timeline-item>
+                    </el-timeline>
+                </div>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane label="Hình Ảnh" name="img">Hình Ảnh</el-tab-pane>
+        <el-tab-pane label="Lịch Sử" name="history">
+            <el-tabs v-model="activeHis" tab-position="left" @tab-click="handleClickHistory">
+                <el-tab-pane :label="item.label" :name="item.name" v-for="item in listData.tabsHistory">
+                    <label class="badge bg-default bg-padding" v-text="titlelabel"></label>
+                    <el-table :data="listData.tableHistory" stripe style="width: 100%">
+                        <el-table-column type="index" label="STT">
+                        </el-table-column>
+                        <el-table-column label="Người Thực Hiện" property="userCreate">
+                        </el-table-column>
+                        <el-table-column label="Công Việc" property="content">
+                        </el-table-column>
+                        <el-table-column label="Địa Chỉ" property="ip">
+                        </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+            </el-tabs>
+        </el-tab-pane>
+        <el-tab-pane label="Thống Kê" name="statiscal">Thống Kê</el-tab-pane>
+        <el-tab-pane label="Cài Đặt" name="setting">Cài Đặt</el-tab-pane>
+    </el-tabs>
+</el-dialog>

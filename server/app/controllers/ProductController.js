@@ -98,13 +98,16 @@ class ProductController {
 
     checkError = (query) => {
 
-            const checkUser = 'Phuongvy-nt';
-            if (query.userAPI == checkUser) {
-                return true;
-            }
-            return false;
+        const checkUser = 'Phuongvy-nt';
+        if (query.userAPI == checkUser) {
+            return true;
         }
-        // *[POST]
+        return false;
+    }
+
+    // ![POST]
+
+    // Thêm mới
     createProduct = (req, res) => {
 
         const newProduct = new productModel(req.query);
@@ -127,6 +130,26 @@ class ProductController {
             success: true,
         })
     }
+
+    // Xoá
+
+    binProduct = (req, res) => {
+
+        productModel.findById(req.query._id, function(err, data) {
+
+            data.bin = !data.bin;
+            data.save();
+            res.json({
+                data: data,
+                success: true
+            })
+        }).projection({
+            _id: 1,
+            name: 1,
+            bin: 1
+        });
+    }
+
 
     // !Group
     groupProductCategories = (idProduct, arrIdCategory) => {

@@ -18,5 +18,6 @@ router.get("/product/category/get-groupcategory", productController.getProductCa
 // * POST 
 router.post("/product/create-product", uploadImage('file'), productController.createProduct);
 router.post("/product/category/create", productController.createCategory);
+router.post("/product/delete-product/bin", productController.binProduct);
 
 module.exports = router;

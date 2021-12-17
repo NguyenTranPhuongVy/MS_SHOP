@@ -156,5 +156,15 @@ html {}
     margin-left: 1%;
 }
 
+.image-detail img {
+    width: 100%;
+    height: 250px;
+    border-radius: 8px;
+}
+
+.history-timeline p {
+    padding-bottom: 5%;
+}
+
 
 /* Change */

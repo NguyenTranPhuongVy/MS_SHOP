@@ -41,6 +41,42 @@ new Vue({
                     }
                 ],
 
+                timelineHistory: [{
+                        contents: 'Phương Vy đã thay đổi sản phẩm',
+                        timestamp: '02/10/2021'
+                    },
+                    {
+                        contents: 'Phương Vy đã thay đổi sản phẩm',
+                        timestamp: '02/10/2021'
+                    },
+                    {
+                        contents: 'Phương Vy đã thay đổi sản phẩm',
+                        timestamp: '02/10/2021'
+                    },
+                    {
+                        contents: 'Phương Vy đã thay đổi sản phẩm',
+                        timestamp: '02/10/2021'
+                    },
+                    {
+                        contents: 'Phương Vy đã thay đổi sản phẩm',
+                        timestamp: '02/10/2021'
+                    }
+                ],
+
+                tabsHistory: [{
+                        name: 'allHis',
+                        label: 'Tổng Lịch Sử',
+                    },
+                    {
+                        name: 'accessHis',
+                        label: 'Lịch Sử Truy Cập'
+                    },
+                    {
+                        name: 'hisChange',
+                        label: 'Lịch Sử Thay Đổi'
+                    }
+                ],
+
                 listCategory: [],
                 listGroupCategory: [],
             },
@@ -146,11 +182,14 @@ new Vue({
             },
 
             activeName: 'index',
+            activeDetails: 'info',
+            acticeHis: 'allHis',
             optionalValue: '',
             search: '',
             listItem: [],
             labelPositionTop: 'top',
             dialogFormCreateNewVisible: false,
+            dialogFormDetailProduct: false,
             fileList: [],
             imageUpload: 'images/image-product/common/no-imgae.png',
             isUploadImage: false,
@@ -159,6 +198,8 @@ new Vue({
             titleCreate: '',
             loadingCate: false,
             loadingTableProduct: false,
+            titlelabel: 'Tổng lịch sử',
+            visibleDelete: false,
         }
     },
 
@@ -169,7 +210,7 @@ new Vue({
     },
 
     methods: {
-
+        // Sự kiện load
         loadProduct() {
             let that = this;
             that.loadingTableProduct = true;
@@ -361,13 +402,59 @@ new Vue({
         },
 
 
-        // click event
+        // sự kiện Click
         clickBtnCreateProductNew() {
             let that = this;
             that.dialogFormCreateNewVisible = true;
             that.titleCreate = "Thêm Sản Phẩm Mới";
             that.createCate = "Thêm Danh Mục";
         },
+
+        clickCateNewProduct() {
+            let that = this;
+            if (that.isHoverCate == false) {
+                that.loadingCate = true;
+                that.createCate = "Đóng Danh Mục";
+                that.isHoverCate = true;
+                setTimeout(function() {
+                    that.loadingCate = false;
+                }, 1000);
+            } else {
+                that.isHoverCate = false;
+                that.createCate = "Thêm Danh Mục";
+            }
+        },
+
+        clickBtnDetail(row) {
+            let that = this;
+            that.dialogFormDetailProduct = true;
+            that.productForm = JSON.parse(JSON.stringify(row));
+            that.loadCategoryProduct();
+            that.title = "Chi Tiết Sản Phẩm - " + row.name;
+
+            that.view = row.view;
+            that.name = row.name;
+            that.dateCreate = row.dateCreate;
+            that.dateModified = row.dateModified;
+            that.userCreate = row.userCreate;
+            that.userModified = row.userModified;
+            that.content = row.content;
+            that.describe = row.describe;
+
+            that.activeText = row.active ? 'Hoạt Động' : 'Không Hoạt Động';
+            that.activeColor = row.active ? 'success' : 'default';
+
+            that.followText = row.follow ? 'Theo Dõi' : 'Không Có Theo Dõi';
+            that.followColor = row.follow ? 'success' : 'default';
+
+            that.noteText = row.note ? 'Chú Ý' : 'Không Chú Ý';
+            that.noteColor = row.note ? 'warning' : 'default';
+
+            that.binText = row.bin ? 'Yes' : 'No';
+            that.binColor = row.bin ? 'danger' : 'default';
+        },
+
+        // Sự kiện chức năng
 
         createNewProduct(productForm) {
             let that = this;
@@ -419,21 +506,6 @@ new Vue({
             });
         },
 
-        clickCateNewProduct() {
-            let that = this;
-            if (that.isHoverCate == false) {
-                that.loadingCate = true;
-                that.createCate = "Đóng Danh Mục";
-                that.isHoverCate = true;
-                setTimeout(function() {
-                    that.loadingCate = false;
-                }, 1000);
-            } else {
-                that.isHoverCate = false;
-                that.createCate = "Thêm Danh Mục";
-            }
-        },
-
         createNewCate(categoryForm) {
             let that = this;
             that.$refs[categoryForm].validate((valid) => {
@@ -475,6 +547,22 @@ new Vue({
             });
         },
 
+        deleteProduct(id) {
+            let that = this;
+            const link = that.api.linkAPI + 'product/delete-product/bin?_id=' + id;
+            axios.post(link)
+                .then(function(response) {
+                    console.log(response);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                })
+                .then(function() {
+                    // always executed
+                });
+        },
+
+
         //uploadImg
         uploadImage(productForm) {
             let that = this;
@@ -499,7 +587,9 @@ new Vue({
             that.productForm.image = '';
             that.isUploadImage = false;
         },
-        // Function to
+
+
+        // Sự kiện chuyển
 
         handleSelectionChange(val) {
             this.multipleSelection = val;
@@ -525,6 +615,10 @@ new Vue({
             }
         },
 
+        handleClickDetails(tab, event) {
+            console.log(tab, event);
+        },
+
         handleChange(value) {},
 
         handleRemove(file, fileList) {
@@ -534,6 +628,31 @@ new Vue({
         handlePreview(file) {
             console.log(file);
         },
+
+        handleClickDetails() {
+            let that = this;
+            that.activeHis = 'allHis';
+            if (that.activeDetail == 'history') {
+                that.titlelabel = "Tổng Lịch Sử";
+            } else {
+                console.log("Lỗi!!!!");
+            }
+        },
+
+        handleClickHistory() {
+            let that = this;
+            if (that.activeHis == 'accessHis') {
+                that.titlelabel = "Lịch Sử Truy Cập";
+            } else if (that.activeHis == 'hisChange') {
+                that.titlelabel = "Lịch Sử Thay Đối";
+            } else if (that.activeHis == 'allHis') {
+                that.titlelabel = "Tổng Lịch Sử";
+            } else {
+                console.log("Lỗi!!!!");
+            }
+        },
+
+        // Tìm kiếm
 
         searchByProduct(searchForm) {
             let that = this;
